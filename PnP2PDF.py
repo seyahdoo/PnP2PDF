@@ -10,15 +10,16 @@ import datetime
 # pip install pillow
 import PySimpleGUI as sg
 from PIL import Image, ImageDraw, ImageCms
+from pathlib import Path
 
-PROGRAM_VERSION = "2.0.2"
+PROGRAM_VERSION = "3.0.0"
 PXLS_IN_MM = 11.81102362204 # needed changes
 DEFAULT_SETTINGS = {"paper_width"   : 210,
             "paper_height"  : 297,
-            "card_width"    : 62.5,
-            "card_height"   : 88.7,
+            "card_width"    : 63.5,
+            "card_height"   : 88.9,
             "resize"        : False,
-            "double_sided"  : False,
+            "double_sided"  : True,
             "rows"          : 3,
             "columns"       : 3,
             "gap"           : 2,
@@ -332,7 +333,7 @@ def create_cards(root_folder, card_width, card_height, smaller_size: bool, doubl
             backs.append(back)
 
         for back in backs:
-            folder_name = back.dir.split("/")[-1].split("_")[0].split(".")[0]
+            folder_name = Path(back.dir).stem.split("_")[0]
             card_dirs = find_card_dirs(f"{root_folder}/{folder_name}")
             cards = [Card(dir, card_width, card_height, back) for dir in card_dirs]
             all_cards.extend(cards)
@@ -466,4 +467,5 @@ def main():
                     "save_to"       : ui_output['-PDFFOLDER-']}
         create_save(save_folder, settings)
 
-main()
+if __name__ == '__main__':
+    main()
