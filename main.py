@@ -246,22 +246,22 @@ class PDF_file:
         y0 = (sheight - (rows-1)*gap - rows*cheight) // 2
 
         for i, sheet in enumerate(self.sheets):
-            page_a = Image.new('CMYK',#'RGB', 
+            page_a = Image.new('RGB',#'RGB', 
                                (int(sheet.width*PXLS_IN_MM),int(sheet.height*PXLS_IN_MM)), 
-                               (0,0,0,0))#(255,255,255))
+                               (255,255,255))#(255,255,255))
             draw_a = ImageDraw.Draw(page_a)
             draw_lines(draw_a, swidth, sheight, rows, columns, gap, 
                        cwidth, cheight, number_of_cards=len(sheet.cards))
             for j, card in enumerate(sheet.cards):
                 card_image = Image.open(card.dir).resize((int(card.width*PXLS_IN_MM), 
                                                           int(card.height*PXLS_IN_MM)))
-                try:
-                    card_image = ImageCms.profileToProfile(card_image, 
-                                                           'color_profiles/sRGB-IEC61966-2.1.icc', 
-                                                           'color_profiles/USWebCoatedSWOP.icc', 
-                                                           outputMode='CMYK')
-                except:
-                    pass
+                # try:
+                #     card_image = ImageCms.profileToProfile(card_image, 
+                #                                            'color_profiles/sRGB-IEC61966-2.1.icc', 
+                #                                            'color_profiles/USWebCoatedSWOP.icc', 
+                #                                            outputMode='CMYK')
+                # except:
+                #     pass
                 # print(card.dir.split("/")[-1], card_image.mode, card_image.load()[0,0])
                 x = x0 + j%columns * (cwidth + gap)
                 y = y0 + j//columns * (cheight + gap)
@@ -279,21 +279,21 @@ class PDF_file:
         
         if double_sided:
             for i, sheet in enumerate(self.sheets):            
-                page_b = Image.new('CMYK',#'RGB', 
+                page_b = Image.new('RGB',#'RGB', 
                                    (int(sheet.width*PXLS_IN_MM),int(sheet.height*PXLS_IN_MM)), 
-                                   (0,0,0,0))#(255,255,255))
+                                   (255,255,255))#(255,255,255))
                 
                 for j, card in enumerate(sheet.cards):
                     if card.back:
                         back_image = Image.open(card.back.dir).resize((int(card.back.width*PXLS_IN_MM),
                                                                        int(card.back.height*PXLS_IN_MM)))
-                        try:
-                            back_image = ImageCms.profileToProfile(back_image, 
-                                                                   'color_profiles/sRGB-IEC61966-2.1.icc', 
-                                                                   'color_profiles/USWebCoatedSWOP.icc', 
-                                                                   outputMode='CMYK')
-                        except: 
-                            pass
+                        # try:
+                        #     back_image = ImageCms.profileToProfile(back_image, 
+                        #                                            'color_profiles/sRGB-IEC61966-2.1.icc', 
+                        #                                            'color_profiles/USWebCoatedSWOP.icc', 
+                        #                                            outputMode='CMYK')
+                        # except: 
+                        #     pass
                         x = x0 + (columns-1-j)%columns * (cwidth + gap)
                         y = y0 + j//columns * (cheight + gap)
                         if card.back.width == card.width and card.back.height == card.height:
