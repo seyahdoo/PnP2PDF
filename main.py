@@ -8,10 +8,51 @@ import pickle
 import datetime
 from pathlib import Path
 import shutil
+import sys
+import socket
+
+def running_linux():
+    return sys.platform.startswith('linux')
+def running_mac():
+    return sys.platform.startswith('darwin')
+def running_windows():
+    return sys.platform.startswith('win')
+def running_trinket():
+    if sys.platform.startswith('linux') and socket.gethostname().startswith('pygame-'):
+        return True
+    return False
+def running_replit():
+    if 'REPL_OWNER' in os.environ and sys.platform.startswith('linux'):
+        return True
+    return False
+
+DEFAULT_USER_SETTINGS_WIN_PATH = r'~\AppData\Local\PySimpleGUI\settings'
+DEFAULT_USER_SETTINGS_LINUX_PATH = r'~/.config/PySimpleGUI/settings'
+DEFAULT_USER_SETTINGS_MAC_PATH = r'~/Library/Application Support/PySimpleGUI/settings'
+DEFAULT_USER_SETTINGS_TRINKET_PATH = r'.'
+DEFAULT_USER_SETTINGS_REPLIT_PATH = r'.'
+
+def get_settings_path():
+    path = None
+    if running_trinket():
+        path = os.path.expanduser(DEFAULT_USER_SETTINGS_TRINKET_PATH)
+    elif running_replit():
+        path = os.path.expanduser(DEFAULT_USER_SETTINGS_REPLIT_PATH)
+    elif running_windows():
+        path = os.path.expanduser(DEFAULT_USER_SETTINGS_WIN_PATH)
+    elif running_linux():
+        path = os.path.expanduser(DEFAULT_USER_SETTINGS_LINUX_PATH)
+    elif running_mac():
+        path = os.path.expanduser(DEFAULT_USER_SETTINGS_MAC_PATH)
+    else:
+        path = '.'
+    return path
+
 try:
-    shutil.rmtree(os.path.join(os.getenv('LOCALAPPDATA'), "PySimpleGUI", "settings"))
+    shutil.rmtree(get_settings_path())
 except FileNotFoundError:
     pass
+
 import PySimpleGUI as sg
 from PIL import Image, ImageDraw, ImageCms
 
