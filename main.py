@@ -57,7 +57,7 @@ import PySimpleGUI as sg
 from PIL import Image, ImageDraw, ImageCms
 
 
-PROGRAM_VERSION = "3.0.0"
+PROGRAM_VERSION = "3.0.1"
 PXLS_IN_MM = 11.81102362204 # needed changes
 DEFAULT_SETTINGS = {"paper_width"   : 210,
             "paper_height"  : 297,
