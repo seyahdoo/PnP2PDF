@@ -1,6 +1,5 @@
 ﻿
 pip install pyinstaller
-pip install --force-reinstall --extra-index-url https://PySimpleGUI.net/install PySimpleGUI
 pip install pillow
 
 pyinstaller `
@@ -9,4 +8,5 @@ pyinstaller `
     --add-data "icon.png:." `
     --icon=icon.png `
     --onefile `
-    --windowed PnP2PDF.py
+    --name PnP2PDF `
+    --windowed main.py

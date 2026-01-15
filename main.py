@@ -6,11 +6,15 @@ import os
 import webbrowser
 import pickle
 import datetime
-# pip install PySimpleGUI
-# pip install pillow
+from pathlib import Path
+import shutil
+try:
+    shutil.rmtree(os.path.join(os.getenv('LOCALAPPDATA'), "PySimpleGUI", "settings"))
+except FileNotFoundError:
+    pass
 import PySimpleGUI as sg
 from PIL import Image, ImageDraw, ImageCms
-from pathlib import Path
+
 
 PROGRAM_VERSION = "3.0.0"
 PXLS_IN_MM = 11.81102362204 # needed changes
